@@ -1,81 +1,66 @@
-const DAY_MS = 86400000;
-const today = setZeroTime(new Date());
-const currentYear = today.getUTCFullYear();
-const currentMonth0 = today.getUTCMonth();
-const currentDate = today.getUTCDate();
-const currentDay0 = today.getUTCDay();
-const year = currentYear;
+import { splitChunks } from "./util";
+export type timestamp = number;
 
-/* For coherence */
-function setZeroTime(date) {
-  date.setUTCHours(0);
-  date.setUTCMinutes(0);
-  date.setUTCSeconds(0);
-  date.setUTCMilliseconds(0);
-  return date;
-}
+const dayMs = 86400000;
+export const weekDayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const daysInMonth = [
-  31,
-  isLeapYear(year) ? 29 : 28,
-  31,
-  30,
-  31,
-  30,
-  31,
-  31,
-  30,
-  31,
-  30,
-  31,
-];
 
-function buildDaysInMonth() {
-  const today1 = setZeroTime(new Date());
-  today1.setUTCDate(1);
-  const day0 = today1.getUTCDay();
-  const firstDayOfMonth = new Date(
-    today1.getUTCFullYear(),
-    today1.getUTCMonth(),
-    1
-  );
-  console.log(today1.getUTCDay());
-  const calendarDataGrid = day0 > 0 ? [...new Array(day0 + 2)] : [];
+/**
+ * Returns a calender grid for the given month and year with Monday as the first day in each week
+ * @param year * @param month 
+ */
 
-  const daysInThisMonth = daysInMonth[currentMonth0];
+export function buildDaysInMonth(year: number, month: number): Array<Array<timestamp>> {
+  const daysInMonth: number[] = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const daysInSelectedMonth = daysInMonth[month];
+  const monthDay1Date = new Date(Date.UTC(year, month));
+  const monthDay1Weekday = zeroMondayMap(monthDay1Date.getUTCDay());
 
-  let timestamp = firstDayOfMonth.getTime();
+  const calendarDays = [];
 
-  calendarDataGrid.push(timestamp);
-
-  for (let i = 1; i < daysInThisMonth; i++) {
-    timestamp += DAY_MS;
-    calendarDataGrid.push(timestamp);
+  // If month starts mid-week, prepend timestamps to Monday 
+  if (monthDay1Weekday > 0) {
+    let timestampToReverse = monthDay1Date.getTime();
+    for (let i = monthDay1Weekday; i > 0; i--) {
+      timestampToReverse -= dayMs;
+      calendarDays.unshift(timestampToReverse);
+    }
   }
 
-  const finalDate = new Date(timestamp);
-  const finalDayOfMonth = new Date(timestamp).getDay();
-  console.log(finalDate);
-  if (finalDayOfMonth !== 6) {
-    Array.prototype.push.call(
-      calendarDataGrid,
-      ...new Array(6 - finalDayOfMonth)
-    );
+
+  let timestamp = monthDay1Date.getTime();
+  calendarDays.push(timestamp);
+
+  for (let i = 0; i < daysInSelectedMonth; i++) {
+    timestamp += dayMs;
+    calendarDays.push(timestamp);
   }
 
-  return calendarDataGrid;
+  const finalDayOfMonth = zeroMondayMap(new Date(timestamp).getUTCDay());
+
+  if (finalDayOfMonth < 6) {
+    for (let i = finalDayOfMonth; i < 6; i++) {
+      timestamp += dayMs;
+      calendarDays.push(timestamp)
+    }
+  }
+
+
+  return splitChunks(calendarDays, 7);
 }
 
-console.log(buildDaysInMonth());
-const dateMap = buildDaysInMonth().map((i) => new Date(i).getDate());
-console.log(dateMap);
 
-const weekNames = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"];
-
-function isLeapYear(year) {
-  if (year % 4 !== 0) return false;
-  if (year % 100 == 0 && year % 400 !== 0) return false;
+export function isLeapYear(year: number): boolean {
+  if (year % 4 !== 0 || (year % 100 == 0 && year % 400 !== 0)) return false;
   return true;
 }
 
-console.log(today);
+
+/**
+ * Remaps weekday index Sunday0 to Monday0 index
+ * @param i Sunday0 index
+ */
+export function zeroMondayMap(i: number) {
+  const mappedIndexes = [6, 0, 1, 2, 3, 4, 5];
+  return mappedIndexes[i];
+}

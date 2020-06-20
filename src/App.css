@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header-row {
+  display: flex;
+}
+
+.calendar-header-cell {
+  width: 50px;
+}
+
+.calendar-row {
+  display: flex;
+}
+
+.calendar-header {
+  display: flex;
+}
+
+.calendar-cell {
+  height: 50px;
+  width: 50px;
+}
+
+.selected {
+  background: yellow;
+}
