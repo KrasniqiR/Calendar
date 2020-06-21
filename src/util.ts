@@ -10,3 +10,7 @@ export function splitChunks(arr: Array<any>, chunkSize: number): Array<Array<any
     }
     return res;
 }
+
+export function cls(...args : Array<any> ) : string {
+    return [...args].filter(i => i).join(" ");
+}

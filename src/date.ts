@@ -3,14 +3,13 @@ export type timestamp = number;
 
 const dayMs = 86400000;
 export const weekDayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
+export const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /**
- * Returns a calender grid for the given month and year with Monday as the first day in each week
+ * Returns a calender grid and timestamps of the first and last days of the month for the given month and year with Monday as the first day in each week
  * @param year * @param month 
  */
-
-export function buildDaysInMonth(year: number, month: number): Array<Array<timestamp>> {
+export function buildCalendarData(year: number, month: number): [Array<Array<timestamp>>, timestamp, timestamp] {
   const daysInMonth: number[] = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysInSelectedMonth = daysInMonth[month];
   const monthDay1Date = new Date(Date.UTC(year, month));
@@ -27,16 +26,16 @@ export function buildDaysInMonth(year: number, month: number): Array<Array<times
     }
   }
 
-
   let timestamp = monthDay1Date.getTime();
   calendarDays.push(timestamp);
 
-  for (let i = 0; i < daysInSelectedMonth; i++) {
+  for (let i = 1; i < daysInSelectedMonth; i++) {
     timestamp += dayMs;
     calendarDays.push(timestamp);
   }
 
-  const finalDayOfMonth = zeroMondayMap(new Date(timestamp).getUTCDay());
+  const endOfMonthDate = new Date(timestamp);
+  const finalDayOfMonth = zeroMondayMap(endOfMonthDate.getUTCDay());
 
   if (finalDayOfMonth < 6) {
     for (let i = finalDayOfMonth; i < 6; i++) {
@@ -45,8 +44,7 @@ export function buildDaysInMonth(year: number, month: number): Array<Array<times
     }
   }
 
-
-  return splitChunks(calendarDays, 7);
+  return [splitChunks(calendarDays, 7), monthDay1Date.getTime(), endOfMonthDate.getTime()];
 }
 
 

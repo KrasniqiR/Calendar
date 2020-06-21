@@ -1,0 +1,53 @@
+.calendar {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(2, min-content) auto;
+
+  .calendar-month-header {
+    font-size: 1.4em;
+    padding: .5em;
+    background: hsl(210, 73, 10);
+    color: hsl(0, 0, 100%);
+    grid-column-start: 1;
+    grid-column-end: 8;
+    vertical-align: center;
+    text-align: center;
+  }
+
+  .calendar-dayname-cell {
+    background: hsl(210, 73, 10);
+    color: hsl(0, 0, 100%);
+    font-size: 1.1em;
+    padding: 0.5em;
+    text-align: center;
+  }
+
+  .calendar-cell {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+
+    span {
+      padding: 1em;
+    }
+
+    &:hover {
+      box-shadow: 0 2px 4px hsla(0, 0, 0%, 0.2);
+    }
+  }
+
+  .selected {
+    span {
+      color: hsl(0, 0, 100%);
+      background: hsl(240, 73, 60);
+      clip-path: polygon(0 24%, 72% 0, 100% 40%, 88% 100%, 13% 82%);
+    }
+  }
+
+  .not-in-month {
+    color: hsla(0, 0%, 0, 0.4);
+  }
+}
