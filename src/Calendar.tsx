@@ -15,25 +15,25 @@ export const Calendar = (props: ICalendarProps) => {
   const [calendarGridCells, startOfMonthTimestamp, endOfMonthTimestamp] = buildCalendarData(year, month);
 
   return (
-    <div className="calendar" style={props.miniature ? {fontSize: `${12}px`} : {} }>
-      <div className="calendar-month-header">{monthNames[today.getUTCMonth()] + " " +today.getUTCFullYear()}</div>
-        {weekDayNames.map(i =>
-          <div className="calendar-dayname-cell" key={i}>
-            {i}
-          </div>
-        )}
+    <div className="calendar" style={props.miniature ? { fontSize: `${12}px` } : {}}>
+      <div className="calendar-month-header">{monthNames[today.getUTCMonth()] + " " + today.getUTCFullYear()}</div>
+      {weekDayNames.map(i =>
+        <div className="calendar-dayname-cell" key={i}>
+          {i}
+        </div>
+      )}
 
       {
-        calendarGridCells.map((i : Array<timestamp>)  => (
-            i.map((j: timestamp) => 
-                <CalendarCell
-                setSelected={(j) => setSelected(j)}
-                date={j}
-                key={j}
-                selected={selected == j}
-                notInMonth={j < startOfMonthTimestamp || j > endOfMonthTimestamp}
-              />
-              )
+        calendarGridCells.map((i: Array<timestamp>) => (
+          i.map((j: timestamp) =>
+            <CalendarCell
+              setSelected={(j) => setSelected(j)}
+              date={j}
+              key={j}
+              selected={selected == j}
+              notInMonth={j < startOfMonthTimestamp || j > endOfMonthTimestamp}
+            />
+          )
         ))
       }
     </div>

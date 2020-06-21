@@ -32,6 +32,6 @@ test("Confirm the calendar grid contains the correct cells for the months 06/202
     [24, 25, 26, 27, 28, 29, 1]
   ];
 
-  expect(buildCalendarData(2020, 5)[0].map(i => i.map(j => new Date(j).getUTCDate()) )).toEqual(juneDesiredCells);
+  expect(buildCalendarData(2020, 5)[0].map(i => i.map(j => new Date(j).getUTCDate()))).toEqual(juneDesiredCells);
   expect(buildCalendarData(2020, 1)[0].map(i => i.map(j => new Date(j).getUTCDate()))).toEqual(febDesiredCells);
 })

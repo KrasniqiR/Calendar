@@ -4,9 +4,14 @@
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(2, min-content) auto;
 
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    font-size: 12px;
+  }
+
   .calendar-month-header {
     font-size: 1.4em;
-    padding: .5em;
+    padding: 0.5em;
     background: hsl(210, 73, 10);
     color: hsl(0, 0, 100%);
     grid-column-start: 1;
@@ -16,14 +21,15 @@
   }
 
   .calendar-dayname-cell {
+    padding: 0.5em 0;
     background: hsl(210, 73, 10);
     color: hsl(0, 0, 100%);
     font-size: 1.1em;
-    padding: 0.5em;
     text-align: center;
   }
 
   .calendar-cell {
+    border: solid 0.5px hsla(210, 73, 10, 0.1);
     display: flex;
     flex: 1;
     justify-content: center;
