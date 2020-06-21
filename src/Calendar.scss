@@ -55,7 +55,7 @@
 
   .today {
     &:not(.selected) {
-      color: red;
+      color: hsl(240, 73, 60);
       font-weight: bold;
     }
   }
