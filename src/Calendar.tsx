@@ -28,6 +28,7 @@ export const Calendar = (props: ICalendarProps) => {
           i.map((j: timestamp) =>
             <CalendarCell
               setSelected={(j) => setSelected(j)}
+              today={j == today.getTime()}
               date={j}
               key={j}
               selected={selected == j}
@@ -42,20 +43,21 @@ export const Calendar = (props: ICalendarProps) => {
 
 interface ICalendarCellProps {
   selected: boolean;
+  today: boolean;
   notInMonth: boolean;
   date: timestamp;
   setSelected: (i: timestamp) => void;
 }
 
 const CalendarCell = (props: ICalendarCellProps) => {
-  const { date, notInMonth, selected, setSelected } = props;
+  const { date, today, notInMonth, selected, setSelected } = props;
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (notInMonth) return;
     setSelected(date);
   }
 
-  return <div onClick={handleClick} className={cls("calendar-cell", selected && "selected", notInMonth && "not-in-month")}>
+  return <div onClick={handleClick} className={cls("calendar-cell", selected && "selected", notInMonth && "not-in-month", today && "today")}>
     <span>{new Date(date).getUTCDate()}</span>
   </div>
 }

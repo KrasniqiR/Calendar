@@ -53,6 +53,13 @@
     }
   }
 
+  .today {
+    &:not(.selected) {
+      color: red;
+      font-weight: bold;
+    }
+  }
+
   .not-in-month {
     color: hsla(0, 0%, 0, 0.4);
   }
