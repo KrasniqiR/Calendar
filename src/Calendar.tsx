@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { buildCalendarData, weekDayNames, timestamp, monthNames } from './date';
+import { buildCalendarData, weekDayNames, timestamp, monthNames, setZeroTime } from './date';
 import { cls } from './util';
 import './Calendar.scss';
 
@@ -8,15 +8,14 @@ interface ICalendarProps {
 }
 
 export const Calendar = (props: ICalendarProps) => {
-  const now = new Date();
-  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const today = setZeroTime(new Date());
   const [selected, setSelected] = useState(today.getTime());
-  const [year, month] = [today.getUTCFullYear(), today.getUTCMonth()];
+  const [year, month] = [today.getFullYear(), today.getMonth()];
   const [calendarGridCells, startOfMonthTimestamp, endOfMonthTimestamp] = buildCalendarData(year, month);
 
   return (
     <div className="calendar" style={props.miniature ? { fontSize: `${12}px` } : {}}>
-      <div className="calendar-month-header">{monthNames[today.getUTCMonth()] + " " + today.getUTCFullYear()}</div>
+      <div className="calendar-month-header">{monthNames[today.getMonth()] + " " + today.getFullYear()}</div>
       {weekDayNames.map(i =>
         <div className="calendar-dayname-cell" key={i}>
           {i}
@@ -58,6 +57,6 @@ const CalendarCell = (props: ICalendarCellProps) => {
   }
 
   return <div onClick={handleClick} className={cls("calendar-cell", selected && "selected", notInMonth && "not-in-month", today && "today")}>
-    <span>{new Date(date).getUTCDate()}</span>
+    <span>{new Date(date).getDate()}</span>
   </div>
 }

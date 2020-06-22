@@ -41,7 +41,9 @@
     }
 
     &:hover {
-      box-shadow: 0 2px 4px hsla(0, 0, 0%, 0.2);
+      &:not(.not-in-month) {
+        box-shadow: 0 2px 4px hsla(0, 0, 0%, 0.2);
+      }
     }
   }
 
@@ -61,6 +63,6 @@
   }
 
   .not-in-month {
-    color: hsla(0, 0%, 0, 0.4);
+    color: hsl(0, 0%, 80);
   }
 }

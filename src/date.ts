@@ -12,8 +12,9 @@ export const monthNames = ["January", "February", "March", "April", "May", "June
 export function buildCalendarData(year: number, month: number): [Array<Array<timestamp>>, timestamp, timestamp] {
   const daysInMonth: number[] = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const daysInSelectedMonth = daysInMonth[month];
-  const monthDay1Date = new Date(Date.UTC(year, month));
-  const monthDay1Weekday = zeroMondayMap(monthDay1Date.getUTCDay());
+  const monthDay1Date  = setZeroTime(new Date())
+  monthDay1Date.setDate(1);
+  const monthDay1Weekday = zeroMondayMap(monthDay1Date.getDay());
 
   const calendarDays = [];
 
@@ -35,12 +36,12 @@ export function buildCalendarData(year: number, month: number): [Array<Array<tim
   }
 
   const endOfMonthDate = new Date(timestamp);
-  const finalDayOfMonth = zeroMondayMap(endOfMonthDate.getUTCDay());
+  const finalDayOfMonth = zeroMondayMap(endOfMonthDate.getDay());
 
   if (finalDayOfMonth < 6) {
     for (let i = finalDayOfMonth; i < 6; i++) {
       timestamp += dayMs;
-      calendarDays.push(timestamp)
+      calendarDays.push(timestamp);
     }
   }
 
@@ -61,4 +62,11 @@ export function isLeapYear(year: number): boolean {
 export function zeroMondayMap(i: number) {
   const mappedIndexes = [6, 0, 1, 2, 3, 4, 5];
   return mappedIndexes[i];
+}
+
+export function setZeroTime(date: Date) : Date {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const monthDate = date.getDate();
+  return new Date(year, month, monthDate);
 }
